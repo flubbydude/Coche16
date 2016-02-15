@@ -20,7 +20,6 @@ public:
 	Drivetrain();
 	void InitDefaultCommand();
 	void Drive(float lSpeed, float rSpeed);
-	void DriveDistance(float distance);
 };
 
 #endif

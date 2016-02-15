@@ -51,6 +51,7 @@ private:
 		std::unique_ptr<Vector> right_stick_vector = std::unique_ptr<Vector>(controller->GetRightVector());
 
 		drive_train->Drive(left_stick_vector->magnitude, right_stick_vector->magnitude);
+		SmartDashboard::PutNumber("Left Encoder Position", drive_train->left_primary_motor->GetPosition());
 
 		// Shooter control
 		if (controller->GetTrigger(controller->RightTrigger,controller->RightTriggerOffset) >= 0.5) {
