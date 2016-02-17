@@ -14,6 +14,7 @@ public:
 	Shooter();
 	void InitDefaultCommand();
 	void run_shooter();
+	void stop_shooter();
 	~Shooter();
 
 };

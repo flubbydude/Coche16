@@ -11,3 +11,6 @@ void BallCollector::Start() {
 void BallCollector::Stop() {
 	motor->Set(0);
 }
+BallCollector::~BallCollector(){
+	delete motor;
+}

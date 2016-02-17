@@ -2,8 +2,8 @@
 #include "../RobotMap.h"
 
 Shooter::Shooter(): Subsystem("Shooter") {
-	lMotor = new Talon(LEFT_SHOOTER_MOTOR);
-	rMotor = new Talon(RIGHT_SHOOTER_MOTOR);
+	lMotor = new Talon(RobotMap::LEFT_SHOOTER_MOTOR);
+	rMotor = new Talon(RobotMap::RIGHT_SHOOTER_MOTOR);
 }
 
 void Shooter::InitDefaultCommand() {
@@ -17,7 +17,12 @@ void Shooter::run_shooter() {
 	//will need to stop the motors a few seconds after they're turned on
 }
 
-Shooter::~Shooter(){
+void Shooter::stop_shooter() {
+	lMotor->SetSpeed(0.0);
+	rMotor->SetSpeed(0.0);
+}
+
+Shooter::~Shooter() {
 	delete lMotor;
 	delete rMotor;
 }

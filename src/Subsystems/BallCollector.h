@@ -10,9 +10,9 @@ public:
 	Talon* motor;
 
 	BallCollector();
-
 	void Start();
 	void Stop();
+	~BallCollector();
 };
 
 #endif
