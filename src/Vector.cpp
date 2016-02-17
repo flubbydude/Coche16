@@ -2,13 +2,12 @@
 #include <Math.h>
 
 Vector Vector::operator+(Vector& v){
-	float x1 = magnitude*cos(angle);
-	float y1 = magnitude*sin(angle);
-	float x2 = v.magnitude*cos(v.angle);
-	float y2 = v.magnitude*sin(v.angle);
-	float xTotal = x1+x2;
-	float yTotal = y1+y2;
-	float degrees = atan2(yTotal,xTotal);
-	float magnitude = sqrt(xTotal*xTotal+yTotal*yTotal);
-	return Vector(magnitude, degrees);
+	if (magnitude == 0){
+		return v;
+	}else if (v.magnitude == 0){
+		return Vector(magnitude, angle);
+	}
+	float a = sqrt(magnitude*magnitude+v.magnitude*v.magnitude-2*magnitude*v.magnitude*cos(angle+M_PI-v.angle));
+	float angleA = asin(a*sin(angle)/magnitude);
+	return Vector(a, angleA);
 }
