@@ -56,13 +56,14 @@ public:
 	const float LeftTriggerButtonThreshold = 0.8;
 	const float RightTriggerButtonThreshold = 0.8;
 
-	const float LeftTriggerOffset;
-	const float RightTriggerOffset;
+	const float LeftTriggerOffset = 0.5f;
+	const float RightTriggerOffset = 0.5f;
 
 
 
-	Vector* getVector(int xId, int yId, float xOffset, float yOffset);
-	Vector GetStick();
+	Vector* GetVector(int xId, int yId, float xOffset, float yOffset);
+	Vector* GetLeftVector();
+	Vector* GetRightVector();
 	bool GetButton(int buttonId);
 	bool GetDPad(int DPadId);
 	float GetTrigger(int TriggerId, int TriggerOffset);

@@ -15,7 +15,7 @@ XboxController::XboxController(int port) {
 	joystick = new Joystick(portNumber);
 }
 
-Vector* XboxController::getVector(int xId, int yId, float xOffset, float yOffset) {
+Vector* XboxController::GetVector(int xId, int yId, float xOffset, float yOffset) {
 	float x = joystick->GetRawAxis(xId);
 	float y = joystick->GetRawAxis(yId);
 
@@ -23,6 +23,14 @@ Vector* XboxController::getVector(int xId, int yId, float xOffset, float yOffset
 	float magnitude = sqrt(x*x+y*y);
 
 	return new Vector(magnitude, degrees);
+}
+
+Vector* XboxController::GetLeftVector() {
+	return GetVector(LeftJoystickX, LeftJoystickY, LeftStickXOffset, LeftStickYOffset);
+}
+
+Vector* XboxController::GetRightVector() {
+	return GetVector(RightJoystickX, RightJoystickY, RightStickXOffset, RightStickYOffset);
 }
 
 bool XboxController::GetButton(int buttonId) {
