@@ -14,7 +14,7 @@ struct Vector{
 	float angle;
 
 	Vector(float magnitude, float angle): magnitude(magnitude), angle(angle) {}
-
+	Vector* operator+(Vector* v);
 };
 
 #endif
