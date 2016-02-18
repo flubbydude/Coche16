@@ -1,23 +1,30 @@
 #include "Vector.h"
 #include <Math.h>
 
-Vector::Vector(float magnitude, float angle): magnitude(magnitude), angle(angle) {
-	while(angle >= 2 * M_PI) {
-		angle -= 2 * M_PI;
-	}
+Vector::Vector(float x, float y): x(x), y(y) {};
 
-	while(angle <= 0) {
-		angle += 2 * M_PI;
-	}
+float Vector::GetAngleRad() {
+	return atan2(y, x);
 }
 
-Vector Vector::operator+(Vector& v){
-	if (magnitude == 0){
-		return v;
-	}else if (v.magnitude == 0){
-		return Vector(magnitude, angle);
+float Vector::GetMagnitude(bool sign_based_on_quadrant) {
+	float magnitude = sqrt(pow(x, 2) + pow(y, 2));
+
+	if(sign_based_on_quadrant && GetQuadrant() > 2) {
+		magnitude *= -1;
 	}
-	float a = sqrt(magnitude*magnitude+v.magnitude*v.magnitude-2*magnitude*v.magnitude*cos(angle+M_PI-v.angle));
-	float angleA = asin(a*sin(angle)/magnitude);
-	return Vector(a, angleA);
+
+	return magnitude;
+}
+
+int Vector::GetQuadrant() {
+	if(x >= 0 && y >= 0) {
+		return 1;
+	} else if(x < 0 && y > 0) {
+		return 2;
+	} else if(x < 0 && y < 0) {
+		return 3;
+	} else {
+		return 4;
+	}
 }

@@ -5,12 +5,14 @@
 #include <math.h>
 
 struct Vector{
+	float x;
+	float y;
 
-	float magnitude;
-	float angle;
+	Vector(float x, float y);
 
-	Vector(float magnitude, float angle);
-	Vector operator+(Vector& v);
+	float GetAngleRad();
+	float GetMagnitude(bool sign_based_on_quadrant);
+	int GetQuadrant();
 };
 
 #endif

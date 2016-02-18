@@ -1,3 +1,0 @@
-enum DriveMode {
-	TANK, ARCADE
-};

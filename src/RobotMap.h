@@ -30,7 +30,6 @@ namespace RobotMap {
 	const int RIGHT_SHOOTER_MOTOR = 5;
 	const int LEFT_SHOOTER_MOTOR = 6;
 
-	const int INTAKE_MOTOR = 7;
+	const int INTAKE_MOTOR = 8;// Talon
 }
-
 #endif

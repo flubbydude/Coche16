@@ -5,7 +5,6 @@
 
 #include "Subsystems/Shooter.h"
 #include "Subsystems/BallCollector.h"
-#include "DriveMode.h"
 
 class Robot: public IterativeRobot {
 private:
@@ -17,9 +16,6 @@ private:
 	std::unique_ptr<Shooter> shooter;
 	std::unique_ptr<BallCollector> ball_collector;
 
-	DriveMode drive_mode;
-	bool right_bumper_pressed;
-
 	void RobotInit() {
 		// Input devices
 		controller = std::unique_ptr<XboxController>(new XboxController(0));
@@ -28,9 +24,6 @@ private:
 		drive_train = std::unique_ptr<Drivetrain> (new Drivetrain());
 		shooter = std::unique_ptr<Shooter> (new Shooter());
 		ball_collector = std::unique_ptr<BallCollector> (new BallCollector());
-
-		drive_mode = DriveMode::TANK;
-		right_bumper_pressed = false;
 	}
 
 	void DisabledInit() {
@@ -49,61 +42,31 @@ private:
 	}
 
 	void TeleopInit() {
-
+		controller->Calibrate();
 	}
 
 	void TeleopPeriodic() {
+		// Calibrate
+		if(controller->GetButton(controller->ButtonRightJoystickPress)) {
+			controller->Calibrate();
+		}
+
 		// Chases drive
-		std::unique_ptr<Vector> left_stick_vector = std::unique_ptr<Vector>(controller->GetLeftVector());
-		std::unique_ptr<Vector> right_stick_vector = std::unique_ptr<Vector>(controller->GetRightVector());
+		std::unique_ptr<Vector> left_stick_vector = std::unique_ptr<Vector>(controller->GetLeftStickVector());
+		std::unique_ptr<Vector> right_stick_vector = std::unique_ptr<Vector>(controller->GetRightStickVector());
 
-		int left_direction_mod = -1;
-		int right_direction_mod = -1;
-
-		if(left_stick_vector->magnitude >= M_PI && left_stick_vector->magnitude <= 2*M_PI) {
-			left_direction_mod *= -1;
-		}
-
-		if(right_stick_vector->magnitude >= M_PI && right_stick_vector->magnitude <= 2*M_PI) {
-			right_direction_mod *= -1;
-		}
-
-
-		if(controller->GetButton(controller->ButtonRB)) {
-			if(drive_mode == DriveMode::TANK && !right_bumper_pressed) {
-				drive_mode = DriveMode::ARCADE;
-			} else if(!right_bumper_pressed) {
-				drive_mode = DriveMode::TANK;
-			}
-
-			right_bumper_pressed = true;
-		} else {
-			right_bumper_pressed = false;
-		}
-
-		switch(drive_mode) {
-			case DriveMode::TANK:
-				drive_train->TankDrive(left_stick_vector->magnitude * left_direction_mod,
-									right_stick_vector->magnitude * right_direction_mod);
-
-				SmartDashboard::PutString("Drive Mode", "Tank");
-			case DriveMode::ARCADE:
-				float left_stick_turn = left_stick_vector->angle - (M_PI / 2);
-				float right_stick_turn = right_stick_vector->angle - (M_PI / 2);
-				drive_train->ArcadeDrive(left_stick_vector->magnitude * left_direction_mod, left_stick_turn + right_stick_turn);
-
-				SmartDashboard::PutString("Drive Mode", "Arcade");
-		}
+		drive_train->TankDrive(left_stick_vector->GetMagnitude(true),
+							right_stick_vector->GetMagnitude(true));
 
 		// Shooter control
-		if (controller->GetTrigger(controller->RightTrigger,controller->RightTriggerOffset) >= 0.5) {
+		if (controller->GetRightTrigger() >= 0.5) {
 			shooter->run_shooter();
 		} else {
 			shooter->stop_shooter();
 		}
 
 		// Ball Collector control
-		if (controller->GetTrigger(controller->LeftTrigger,controller->LeftTriggerOffset) >= 0.5) {
+		if (controller->GetLeftTrigger() >= 0.5) {
 			ball_collector->Start();
 		} else {
 			ball_collector->Stop();
