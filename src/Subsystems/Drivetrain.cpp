@@ -28,7 +28,15 @@ void Drivetrain::InitDefaultCommand() {
 	//SetDefaultCommand(new MySpecialCommand());
 }
 
-void Drivetrain::Drive(float lSpeed, float rSpeed) {
+void Drivetrain::TankDrive(float lSpeed, float rSpeed) {
 	//should be constantly getting speed inputs from the controller
-	robot_drive->TankDrive(lSpeed, rSpeed, false);
+	robot_drive->TankDrive(lSpeed, rSpeed, true);
+}
+
+void Drivetrain::ArcadeDrive(float magnitude, float rotate) {
+	robot_drive->ArcadeDrive(magnitude, rotate, true);
+}
+
+void Drivetrain::DriveDistance(float distance) {
+	left_primary_motor->Get
 }
