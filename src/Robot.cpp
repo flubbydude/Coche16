@@ -29,7 +29,7 @@ private:
 		shooter = std::unique_ptr<Shooter> (new Shooter());
 		ball_collector = std::unique_ptr<BallCollector> (new BallCollector());
 
-		drive_mode = DriveMode::ARCADE;
+		drive_mode = DriveMode::TANK;
 		right_bumper_pressed = false;
 	}
 
@@ -69,10 +69,10 @@ private:
 		}
 
 
-		if(controller->GetButton(controller->ButtonRB) && !right_bumper_pressed) {
-			if(drive_mode == DriveMode::TANK) {
+		if(controller->GetButton(controller->ButtonRB)) {
+			if(drive_mode == DriveMode::TANK && !right_bumper_pressed) {
 				drive_mode = DriveMode::ARCADE;
-			} else {
+			} else if(!right_bumper_pressed) {
 				drive_mode = DriveMode::TANK;
 			}
 
@@ -93,10 +93,6 @@ private:
 				drive_train->ArcadeDrive(left_stick_vector->magnitude * left_direction_mod, left_stick_turn + right_stick_turn);
 
 				SmartDashboard::PutString("Drive Mode", "Arcade");
-		}
-
-		if(drive_train == DriveMode::TANK) {
-
 		}
 
 		// Shooter control

@@ -8,6 +8,7 @@
 #include "Vector.h"
 #include <Math.h>
 
+/*
 Vector* Vector::operator+(Vector* v){
 	float x1 = this->magnitude*cos(this->angle);
 	float y1 = this->magnitude*sin(this->angle);
@@ -19,3 +20,4 @@ Vector* Vector::operator+(Vector* v){
 	float magnitude = sqrt(xTotal*xTotal+yTotal*yTotal);
 	return new Vector(magnitude, degrees);
 }
+*/

@@ -38,5 +38,5 @@ void Drivetrain::ArcadeDrive(float magnitude, float rotate) {
 }
 
 void Drivetrain::DriveDistance(float distance) {
-	left_primary_motor->Get
+	//left_primary_motor->GetEncVel()
 }
