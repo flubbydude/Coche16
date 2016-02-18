@@ -30,13 +30,13 @@ public:
 	const int ButtonLeftJoystickPress = 9;
 	const int ButtonRightJoystickPress = 10;
 
-	const int LeftJoystickX = 1;
-	const int LeftJoystickY = 2;
-	const int RightJoystickX = 3;
-	const int RightJoystickY = 4;
+	const int LeftJoystickX = 0;
+	const int LeftJoystickY = 1;
+	const int RightJoystickX = 4;
+	const int RightJoystickY = 5;
 
-	const int LeftTrigger = 5;
-	const int RightTrigger = 6;
+	const int LeftTrigger = 2;
+	const int RightTrigger = 3;
 
 	const float LeftStickXOffset = 0.5;
 	const float LeftStickYOffset = 0.5;
