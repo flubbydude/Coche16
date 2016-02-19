@@ -23,7 +23,6 @@ public:
 	void ArcadeDrive(float magnitude, float rotate);
 
 	void DriveDistance(float distance);
-	void TurnAngle(float angle);
 };
 
 #endif
