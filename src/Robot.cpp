@@ -1,4 +1,4 @@
-#include <Subsystems/Drivetrain.h>
+																	#include <Subsystems/Drivetrain.h>
 #include "WPILib.h"
 
 #include "XboxController.h"
@@ -42,25 +42,31 @@ private:
 	}
 
 	void TeleopInit() {
-
+		controller->Calibrate();
 	}
 
 	void TeleopPeriodic() {
-		// Chases drive
-		std::unique_ptr<Vector> left_stick_vector = std::unique_ptr<Vector>(controller->GetLeftVector());
-		std::unique_ptr<Vector> right_stick_vector = std::unique_ptr<Vector>(controller->GetRightVector());
+		// Calibrate
+		if(controller->GetButton(controller->ButtonRightJoystickPress)) {
+			controller->Calibrate();
+		}
 
-		drive_train->Drive(left_stick_vector->magnitude, right_stick_vector->magnitude);
+		// Chases drive
+		std::unique_ptr<Vector> left_stick_vector = std::unique_ptr<Vector>(controller->GetLeftStickVector());
+		std::unique_ptr<Vector> right_stick_vector = std::unique_ptr<Vector>(controller->GetRightStickVector());
+
+		drive_train->TankDrive(left_stick_vector->GetMagnitude(true),
+							right_stick_vector->GetMagnitude(true));
 
 		// Shooter control
-		if (controller->GetTrigger(controller->RightTrigger,controller->RightTriggerOffset) >= 0.5) {
+		if (controller->GetRightTrigger() >= 0.5) {
 			shooter->run_shooter();
 		} else {
 			shooter->stop_shooter();
 		}
 
 		// Ball Collector control
-		if (controller->GetTrigger(controller->LeftTrigger,controller->LeftTriggerOffset) >= 0.5) {
+		if (controller->GetLeftTrigger() >= 0.5) {
 			ball_collector->Start();
 		} else {
 			ball_collector->Stop();

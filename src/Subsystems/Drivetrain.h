@@ -19,7 +19,9 @@ public:
 
 	Drivetrain();
 	void InitDefaultCommand();
-	void Drive(float lSpeed, float rSpeed);
+	void TankDrive(float lSpeed, float rSpeed);
+	void ArcadeDrive(float magnitude, float rotate);
+
 	void DriveDistance(float distance);
 };
 
