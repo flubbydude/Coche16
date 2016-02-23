@@ -10,7 +10,9 @@ TankDriveWithXBoxController::TankDriveWithXBoxController(): Command("TankDriveWi
 }
 
 // Called just before this Command runs the first time
-void TankDriveWithXBoxController::Initialize() {}
+void TankDriveWithXBoxController::Initialize() {
+	Robot::drive_train->Reset();
+}
 
 // Called repeatedly when this Command is scheduled to run
 void TankDriveWithXBoxController::Execute() {
@@ -27,7 +29,7 @@ bool TankDriveWithXBoxController::IsFinished() {
 
 // Called once after isFinished returns true
 void TankDriveWithXBoxController::End() {
-	Robot::drive_train->Drive(0, 0);
+	Robot::drive_train->Reset();
 }
 
 // Called when another command which requires one or more of the same
