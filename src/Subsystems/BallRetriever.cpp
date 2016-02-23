@@ -1,16 +1,16 @@
 #include "BallRetriever.h"
 
 #include "../RobotMap.h"
-#include "../Commands/RunBallRetriever.h"
+#include "../Commands/StopBallRetriever.h"
 
 BallRetriever::BallRetriever(): Subsystem("BallRetriever") {
-	victor = std::unique_ptr<Victor>(new Victor(RobotMap::INTAKE_MOTOR));
+	talon = std::unique_ptr<Talon>(new Talon(RobotMap::INTAKE_MOTOR));
 }
 
 void BallRetriever::InitDefaultCommand() {
-	SetDefaultCommand(new RunBallRetriever(0));
+	SetDefaultCommand(new StopBallRetriever());
 }
 
 void BallRetriever::Run(float speed) {
-	victor->Set(speed, 0);
+	talon->Set(speed, 0);
 }

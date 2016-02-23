@@ -12,8 +12,8 @@ public:
 	void Run(float speed);
 
 private:
-	std::unique_ptr<Victor> left_victor;
-	std::unique_ptr<Victor> right_victor;
+	std::unique_ptr<Talon> left_talon;
+	std::unique_ptr<Talon> right_talon;
 };
 
 #endif

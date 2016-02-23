@@ -18,7 +18,7 @@ void DriveDistance::Execute() {}
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveDistance::IsFinished() {
-	Robot::drive_train->OnTarget();
+	return Robot::drive_train->OnTarget();
 }
 
 // Called once after isFinished returns true

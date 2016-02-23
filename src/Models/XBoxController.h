@@ -77,6 +77,8 @@ public:
 	std::shared_ptr<JoystickButton> GetJoystickButton(int id);
 	std::shared_ptr<XboxControllerTriggerButton> GetTriggerJoystickButton(int id, float threshold);
 
+	void Calibrate();
+
 private:
 	std::map<int, std::shared_ptr<JoystickButton>> joystick_button_map;
 	std::map<int, std::shared_ptr<XboxControllerTriggerButton>> trigger_joystick_button_map;

@@ -10,16 +10,24 @@ public:
 	void InitDefaultCommand();
 
 	void Drive(float left, float right);
-	void UsePIDOutput(double output);
-	double ReturnPIDInput();
 
 	void Reset();
+	void InvertDirection();
+
+	void PrintInvertedStatus();
+
+	void UsePIDOutput(double output);
+	double ReturnPIDInput();
 
 private:
 	std::unique_ptr<RobotDrive> robot_drive;
 
-	std::unique_ptr<CANTalon> left_primary_motor;
-	std::unique_ptr<CANTalon> right_primary_motor;
+	std::shared_ptr<CANTalon> left_primary_motor;
+	std::shared_ptr<Jaguar> left_secondary_motor;
+	std::shared_ptr<CANTalon> right_primary_motor;
+	std::shared_ptr<Jaguar> right_secondary_motor;
+
+	int direction_modifier;
 };
 
 #endif

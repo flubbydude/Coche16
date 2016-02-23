@@ -6,7 +6,7 @@
 
 class BallRetriever: public Subsystem {
 private:
-	std::unique_ptr<Victor> victor;
+	std::unique_ptr<Talon> talon;
 
 public:
 	BallRetriever();

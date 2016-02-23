@@ -20,6 +20,7 @@ public:
 
 private:
 	std::unique_ptr<Command> autonomousCommand;
+	double last_inverted_time;
 
 	void RobotInit();
 	void DisabledInit();

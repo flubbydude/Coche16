@@ -16,6 +16,7 @@ void TankDriveWithXBoxController::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void TankDriveWithXBoxController::Execute() {
+	SmartDashboard::PutNumber("Running-Time", GetTime());
 	Vector lVector = Robot::oi->xbox_controller->GetLeftStick();
 	Vector rVector = Robot::oi->xbox_controller->GetRightStick();
 

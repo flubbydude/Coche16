@@ -87,3 +87,12 @@ XboxControllerTriggerButton::XboxControllerTriggerButton(XBoxController *control
 bool XboxControllerTriggerButton::Get() {
 	return controller->GetTrigger(trigger_id) >= pressed_threshold;
 }
+
+void XBoxController::Calibrate() {
+	left_stick_offset = Vector(wpilib_joystick->GetRawAxis(AXIS_LEFT_STICK_X_ID),
+								wpilib_joystick->GetRawAxis(AXIS_LEFT_STICK_Y_ID));
+
+
+	right_stick_offset = Vector(wpilib_joystick->GetRawAxis(AXIS_RIGHT_STICK_X_ID),
+								wpilib_joystick->GetRawAxis(AXIS_RIGHT_STICK_Y_ID));
+}
