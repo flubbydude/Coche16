@@ -51,11 +51,11 @@ float XBoxController::GetRightTrigger() {
 }
 
 bool XBoxController::GetLeftTriggerAsButton() {
-	return GetLeftTrigger() >= left_trigger_button_threshold;
+	return GetLeftTrigger() >= LEFT_TRIGGER_BUTTON_THRESHOLD;
 }
 
 bool XBoxController::GetRightTriggerAsButton() {
-	return GetRightTrigger()>= right_trigger_button_threshold;
+	return GetRightTrigger()>= RIGHT_TRIGGER_BUTTON_THRESHOLD;
 }
 
 std::shared_ptr<JoystickButton> XBoxController::GetJoystickButton(int id) {
@@ -64,4 +64,25 @@ std::shared_ptr<JoystickButton> XBoxController::GetJoystickButton(int id) {
 	}
 
 	return joystick_button_map[id];
+}
+
+std::shared_ptr<XboxControllerTriggerButton> XBoxController::GetTriggerJoystickButton(int id, float threshold) {
+	if(trigger_joystick_button_map.count(id) == 0) {
+		trigger_joystick_button_map[id] = std::shared_ptr<XboxControllerTriggerButton>(
+				new XboxControllerTriggerButton(this, id, threshold)
+		);
+	}
+
+	return trigger_joystick_button_map[id];
+}
+
+XboxControllerTriggerButton::XboxControllerTriggerButton(XBoxController *controller, int trigger_id, float pressed_threshold):
+		controller(controller),
+		trigger_id(trigger_id),
+		pressed_threshold(pressed_threshold) {
+
+}
+
+bool XboxControllerTriggerButton::Get() {
+	return controller->GetTrigger(trigger_id) >= pressed_threshold;
 }

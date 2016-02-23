@@ -4,13 +4,17 @@
 #include "WPILib.h"
 #include "Commands/Command.h"
 
-#include "OI.h"
-
 #include "Subsystems/DriveTrain.h"
+#include "Subsystems/Shooter.h"
+#include "Subsystems/BallRetriever.h"
+
+#include "OI.h"
 
 class Robot: public IterativeRobot {
 public:
 	static std::shared_ptr<DriveTrain> drive_train;
+	static std::shared_ptr<Shooter> shooter;
+	static std::shared_ptr<BallRetriever> ball_retriever;
 
 	static std::unique_ptr<OI> oi;
 

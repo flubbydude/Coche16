@@ -14,6 +14,8 @@
 
 #include "Vector.h"
 
+class XboxControllerTriggerButton;
+
 class XBoxController {
 public:
 	// Axis Ids
@@ -52,14 +54,17 @@ public:
 	const static int DPAD_UP_LEFT = 315;
 
 	// Other
-	float left_trigger_button_threshold = 0.8;
-	float right_trigger_button_threshold = 0.8;
+	constexpr static float LEFT_TRIGGER_BUTTON_THRESHOLD = 0.8;
+	constexpr static float RIGHT_TRIGGER_BUTTON_THRESHOLD = 0.8;
 
 	XBoxController(int port);
 
 	// Getters
 	Vector GetLeftStick();
 	Vector GetRightStick();
+
+	Vector GetStick(int xId, int yId, Vector offset);
+	float GetTrigger(int id);
 
 	bool GetButton(int id);
 
@@ -72,16 +77,30 @@ public:
 	bool GetRightTriggerAsButton();
 
 	std::shared_ptr<JoystickButton> GetJoystickButton(int id);
+	std::shared_ptr<XboxControllerTriggerButton> GetTriggerJoystickButton(int id, float threshold);
 
 private:
 	std::map<int, std::shared_ptr<JoystickButton>> joystick_button_map;
+	std::map<int, std::shared_ptr<XboxControllerTriggerButton>> trigger_joystick_button_map;
+
 	std::unique_ptr<Joystick> wpilib_joystick;
 
 	Vector left_stick_offset;
 	Vector right_stick_offset;
+};
 
-	Vector GetStick(int xId, int yId, Vector offset);
-	float GetTrigger(int id);
+class XboxControllerTriggerButton: public Button {
+private:
+	XBoxController *controller;
+
+	int trigger_id;
+	float pressed_threshold;
+
+public:
+	XboxControllerTriggerButton(XBoxController *controller, int trigger_id, float pressed_threshold);
+	~XboxControllerTriggerButton();
+
+	bool Get();
 };
 
 #endif /* SRC_MODELS_XBOXCONTROLLER_H_ */

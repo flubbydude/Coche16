@@ -7,8 +7,7 @@
 #include "../RobotMap.h"
 #include "../Commands/TankDriveWithXBoxController.h"
 
-class DriveTrain: public Subsystem
-{
+class DriveTrain: public Subsystem {
 private:
 	std::unique_ptr<RobotDrive> robot_drive;
 
