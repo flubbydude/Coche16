@@ -8,8 +8,6 @@
 #ifndef SRC_MODELS_VECTOR_H_
 #define SRC_MODELS_VECTOR_H_
 
-#include <math.h>
-
 struct Vector {
 	float x;
 	float y;

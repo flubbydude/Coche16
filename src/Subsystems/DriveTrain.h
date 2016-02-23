@@ -4,9 +4,6 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 
-#include "../RobotMap.h"
-#include "../Commands/TankDriveWithXBoxController.h"
-
 class DriveTrain: public Subsystem {
 private:
 	std::unique_ptr<RobotDrive> robot_drive;

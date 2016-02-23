@@ -1,5 +1,7 @@
 #include "RunShooter.h"
 
+#include "../Robot.h"
+
 RunShooter::RunShooter(float speed): Command("RunShooter"), speed(speed) {
 	Requires(Robot::shooter.get());
 }

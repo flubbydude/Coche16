@@ -4,8 +4,6 @@
 #include "Commands/Command.h"
 #include "WPILib.h"
 
-#include "../Robot.h"
-
 class RunBallRetriever: public Command {
 public:
 	RunBallRetriever(float speed);

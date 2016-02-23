@@ -4,8 +4,6 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 
-#include "../Commands/RunBallRetriever.h"
-
 class BallRetriever: public Subsystem {
 private:
 	std::unique_ptr<Victor> victor;

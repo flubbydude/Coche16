@@ -8,8 +8,6 @@
 #ifndef SRC_MODELS_XBOXCONTROLLER_H_
 #define SRC_MODELS_XBOXCONTROLLER_H_
 
-#include <map>
-
 #include "WPILib.h"
 
 #include "Vector.h"
@@ -98,7 +96,6 @@ private:
 
 public:
 	XboxControllerTriggerButton(XBoxController *controller, int trigger_id, float pressed_threshold);
-	~XboxControllerTriggerButton();
 
 	bool Get();
 };

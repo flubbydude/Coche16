@@ -5,7 +5,8 @@
  *      Author: Noah-Huppert
  */
 
-#include <Models/XBoxController.h>
+#include <map>
+#include "XBoxController.h"
 
 XBoxController::XBoxController(int port) {
 	wpilib_joystick = std::unique_ptr<Joystick>(new Joystick(port));

@@ -1,5 +1,11 @@
 #include "OI.h"
 
+#include "RobotMap.h"
+
+#include "Commands/RunShooter.h"
+#include "Commands/RunBallRetriever.h"
+#include "Commands/TankDriveWithXBoxController.h"
+
 OI::OI() {
 	xbox_controller = std::shared_ptr<XBoxController>(new XBoxController(RobotMap::OPERATOR_CONTROLLER_PORT));
 

@@ -1,5 +1,7 @@
 #include "Vector.h"
 
+#include <math.h>
+
 Vector::Vector(): x(0), y(0) {};
 Vector::Vector(float x, float y): x(x), y(y) {}
 

@@ -4,8 +4,6 @@
 #include "Commands/Command.h"
 #include "WPILib.h"
 
-#include "../Robot.h"
-
 class RunShooter: public Command {
 public:
 	RunShooter(float speed);

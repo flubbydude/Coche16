@@ -1,5 +1,7 @@
 #include "RunBallRetriever.h"
 
+#include "../Robot.h"
+
 RunBallRetriever::RunBallRetriever(float speed): Command("RunBallRetriever"), speed(speed){
 	Requires(Robot::ball_retriever.get());
 }

@@ -1,5 +1,7 @@
 #include "BallRetriever.h"
+
 #include "../RobotMap.h"
+#include "../Commands/RunBallRetriever.h"
 
 BallRetriever::BallRetriever(): Subsystem("BallRetriever") {
 	victor = std::unique_ptr<Victor>(new Victor(RobotMap::INTAKE_MOTOR));

@@ -4,9 +4,6 @@
 #include "WPILib.h"
 #include "Commands/Command.h"
 
-#include "../Robot.h"
-#include "../Models/Vector.h"
-
 class TankDriveWithXBoxController: public Command {
 public:
 	TankDriveWithXBoxController();

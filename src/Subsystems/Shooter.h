@@ -4,9 +4,6 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 
-#include "../RobotMap.h"
-#include "../Commands/RunShooter.h"
-
 class Shooter: public Subsystem {
 public:
 	Shooter();

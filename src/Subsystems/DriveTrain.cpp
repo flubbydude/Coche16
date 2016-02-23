@@ -1,5 +1,8 @@
 #include "DriveTrain.h"
 
+#include "../RobotMap.h"
+#include "../Commands/TankDriveWithXBoxController.h"
+
 DriveTrain::DriveTrain(): Subsystem("DriveTrain") {
 	robot_drive = std::unique_ptr<RobotDrive>(
 			new RobotDrive(RobotMap::LEFT_PRIMARY_MOTOR, RobotMap::LEFT_SECONDARY_MOTOR,

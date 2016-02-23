@@ -1,5 +1,8 @@
 #include "TankDriveWithXBoxController.h"
 
+#include "../Robot.h"
+#include "../Models/Vector.h"
+
 TankDriveWithXBoxController::TankDriveWithXBoxController(): Command("TankDriveWithXBoxController") {
 	// Use Requires() here to declare subsystem dependencies
 	// eg. Requires(chassis);
