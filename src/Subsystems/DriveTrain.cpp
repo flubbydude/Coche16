@@ -8,12 +8,9 @@ DriveTrain::DriveTrain(): Subsystem("DriveTrain") {
 }
 
 void DriveTrain::InitDefaultCommand() {
-	// Set the default command for a subsystem here.
-	//SetDefaultCommand(new MySpecialCommand());
+	SetDefaultCommand(new TankDriveWithXBoxController());
 }
 
 void DriveTrain::Drive(float left, float right) {
 	robot_drive->TankDrive(left, right);
 }
-
-
