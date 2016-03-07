@@ -17,5 +17,5 @@ float Vector::GetAngleRad() {
 }
 
 float Vector::GetMagnitude(bool account_for_quadrant) {
-	return sqrt(pow(x, 2) + pow(y, 2)) * (account_for_quadrant && GetQuadrant() > 2 ? -1 : 1);
+	return sqrt(pow(x, 2) + pow(y, 2)) * ((account_for_quadrant && (GetQuadrant() > 2)) ? -1 : 1);
 }

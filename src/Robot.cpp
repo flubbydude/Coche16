@@ -1,6 +1,7 @@
 #include "Robot.h"
 
 #include "RobotMap.h"
+#include "Commands/DriveDistance.h"
 
 std::shared_ptr<DriveTrain> Robot::drive_train;
 std::shared_ptr<Shooter> Robot::shooter;
@@ -29,12 +30,22 @@ void Robot::DisabledPeriodic() {
 void Robot::AutonomousInit() {
 	// TODO Auto command
 	//autonomousCommand.reset((Command *)chooser->GetSelected());
+	//autonomousCommand.reset(new DriveDistance(100));
+
+	drive_train->left_primary_motor->SetControlMode(CANTalon::ControlMode::kSpeed);
+	drive_train->right_primary_motor->SetControlMode(CANTalon::ControlMode::kSpeed);
 
 	if (autonomousCommand != NULL) autonomousCommand->Start();
 }
 
 void Robot::AutonomousPeriodic() {
 	Scheduler::GetInstance()->Run();
+
+	drive_train->left_primary_motor->Set(0.3, 0);
+	drive_train->right_primary_motor->Set(0.3, 1);
+
+	SmartDashboard::PutNumber("LPost", drive_train->left_primary_motor->GetPosition());
+	SmartDashboard::PutNumber("LVel", drive_train->left_primary_motor->GetEncVel());
 }
 
 void Robot::TeleopInit() {
@@ -55,6 +66,10 @@ void Robot::TeleopPeriodic() {
 	if(GetTime() - last_inverted_time >= 0.5 && oi->xbox_controller->GetButton(XBoxController::BUTTON_A)) {
 		drive_train->InvertDirection();
 	}
+
+	//SmartDashboard::PutNumber("LCount", drive_train->left_primary_motor->GetPosition());
+	//SmartDashboard::PutNumber("RCount", drive_train->right_primary_motor->GetPosition());
+
 }
 
 void Robot::TestPeriodic() {

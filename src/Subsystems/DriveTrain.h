@@ -4,7 +4,7 @@
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 
-class DriveTrain: public PIDSubsystem {
+class DriveTrain: public Subsystem {
 public:
 	DriveTrain();
 	void InitDefaultCommand();
@@ -19,7 +19,7 @@ public:
 	void UsePIDOutput(double output);
 	double ReturnPIDInput();
 
-private:
+//private:
 	std::unique_ptr<RobotDrive> robot_drive;
 
 	std::shared_ptr<CANTalon> left_primary_motor;

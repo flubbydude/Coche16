@@ -3,7 +3,7 @@
 #include "../RobotMap.h"
 #include "../Commands/TankDriveWithXBoxController.h"
 
-DriveTrain::DriveTrain(): PIDSubsystem("DriveTrain", 1, 0, 0) {
+DriveTrain::DriveTrain(): Subsystem("DriveTrain") {
 	left_primary_motor = std::shared_ptr<CANTalon>(new CANTalon(RobotMap::LEFT_PRIMARY_MOTOR));
 	left_secondary_motor = std::shared_ptr<Jaguar>(new Jaguar(RobotMap::LEFT_SECONDARY_MOTOR));
 
@@ -15,12 +15,21 @@ DriveTrain::DriveTrain(): PIDSubsystem("DriveTrain", 1, 0, 0) {
 							right_primary_motor, right_secondary_motor)
 	);
 
+
+	left_primary_motor->Set(0, 0);
+	left_secondary_motor->Set(0, 0);
+
+	right_primary_motor->Set(0, 1);
+	right_secondary_motor->Set(0, 1);
+
 	direction_modifier = -1;
 
-	SetOutputRange(-1, 1);
+	//SetOutputRange(-1, 1);
 
 	robot_drive->SetSafetyEnabled(true);
-	robot_drive->SetExpiration(0.5);
+	robot_drive->SetExpiration(0.3);
+
+	//Disable();
 
 	Reset();
 }
@@ -30,14 +39,22 @@ void DriveTrain::InitDefaultCommand() {
 }
 
 void DriveTrain::Drive(float left, float right) {
-	left *= direction_modifier;
-	right *= direction_modifier;
+	//left *= direction_modifier;
+	//right *= direction_modifier;
 
-	robot_drive->TankDrive(left, right, true);
+
+	left_primary_motor->Set(left, 0);
+	right_primary_motor->Set(right, 1);
+
+
+	SmartDashboard::PutNumber("LEFT", left);
+	SmartDashboard::PutNumber("RIGHT", right);
+
+	//robot_drive->TankDrive(left, right, false);
 }
 
 void DriveTrain::UsePIDOutput(double output) {
-	//robot_drive->TankDrive(output, output, false);
+	robot_drive->TankDrive(output, output, false);
 }
 
 double DriveTrain::ReturnPIDInput() {
@@ -50,8 +67,8 @@ void DriveTrain::Reset() {
 	left_primary_motor->SetPosition(0);
 	right_primary_motor->SetPosition(0);
 
-	Disable();
-	SetSetpoint(0);
+	//Disable();
+	//SetSetpoint(0);
 }
 
 void DriveTrain::InvertDirection() {
