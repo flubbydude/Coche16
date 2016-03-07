@@ -5,10 +5,15 @@
 
 DriveTrain::DriveTrain(): Subsystem("DriveTrain") {
 	left_primary_motor = std::shared_ptr<CANTalon>(new CANTalon(RobotMap::LEFT_PRIMARY_MOTOR));
-	left_secondary_motor = std::shared_ptr<Jaguar>(new Jaguar(RobotMap::LEFT_SECONDARY_MOTOR));
+	left_secondary_motor = std::shared_ptr<CANJaguar>(new CANJaguar(RobotMap::LEFT_SECONDARY_MOTOR));
 
 	right_primary_motor = std::shared_ptr<CANTalon>(new CANTalon(RobotMap::RIGHT_PRIMARY_MOTOR));
-	right_secondary_motor = std::shared_ptr<Jaguar>(new Jaguar(RobotMap::RIGHT_SECONDARY_MOTOR));
+	right_secondary_motor = std::shared_ptr<CANJaguar>(new CANJaguar(RobotMap::RIGHT_SECONDARY_MOTOR));
+
+	/*
+	right_primary_motor->SetInverted(true);
+	right_secondary_motor->SetInverted(true);
+	*/
 
 	robot_drive = std::unique_ptr<RobotDrive>(
 			new RobotDrive(left_primary_motor, left_secondary_motor,
@@ -29,6 +34,8 @@ DriveTrain::DriveTrain(): Subsystem("DriveTrain") {
 	robot_drive->SetSafetyEnabled(true);
 	robot_drive->SetExpiration(0.3);
 
+	SmartDashboard::PutNumber("RP", right_primary_motor->GetSpeed());
+
 	//Disable();
 
 	Reset();
@@ -42,15 +49,33 @@ void DriveTrain::Drive(float left, float right) {
 	//left *= direction_modifier;
 	//right *= direction_modifier;
 
+	left *= -1;
+	right *= -1;
 
-	left_primary_motor->Set(left, 0);
-	right_primary_motor->Set(right, 1);
+	if(left < -1) {
+		left = -1;
+	} else if(left > 1) {
+		left = 1;
+	}
+
+	if(right < -1) {
+		right = -1;
+	} else if(right > 1) {
+		right = 1;
+	}
+
+/*
+	left_primary_motor->Set(left);
+	left_secondary_motor->Set(left);
+	right_primary_motor->Set(right);
+	right_secondary_motor->Set(right);
+*/
 
 
 	SmartDashboard::PutNumber("LEFT", left);
 	SmartDashboard::PutNumber("RIGHT", right);
 
-	//robot_drive->TankDrive(left, right, false);
+	robot_drive->TankDrive(left, right, false);
 }
 
 void DriveTrain::UsePIDOutput(double output) {

@@ -32,17 +32,23 @@ void Robot::AutonomousInit() {
 	//autonomousCommand.reset((Command *)chooser->GetSelected());
 	//autonomousCommand.reset(new DriveDistance(100));
 
-	drive_train->left_primary_motor->SetControlMode(CANTalon::ControlMode::kSpeed);
-	drive_train->right_primary_motor->SetControlMode(CANTalon::ControlMode::kSpeed);
+	//drive_train->left_primary_motor->SetControlMode(CANTalon::ControlMode::kSpeed);
+	//drive_train->right_primary_motor->SetControlMode(CANTalon::ControlMode::kSpeed);
 
 	if (autonomousCommand != NULL) autonomousCommand->Start();
+
+
+	drive_train->left_primary_motor->SetPosition(0);
+	drive_train->right_primary_motor->SetPosition(0);
 }
 
 void Robot::AutonomousPeriodic() {
 	Scheduler::GetInstance()->Run();
 
-	drive_train->left_primary_motor->Set(0.3, 0);
-	drive_train->right_primary_motor->Set(0.3, 1);
+	if(drive_train->left_primary_motor->GetPosition() < 50) {
+		drive_train->Drive(0.3, 0.3);
+	}
+
 
 	SmartDashboard::PutNumber("LPost", drive_train->left_primary_motor->GetPosition());
 	SmartDashboard::PutNumber("LVel", drive_train->left_primary_motor->GetEncVel());
