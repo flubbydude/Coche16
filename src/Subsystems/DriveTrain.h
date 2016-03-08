@@ -19,7 +19,7 @@ public:
 	void UsePIDOutput(double output);
 	double ReturnPIDInput();
 
-//private:
+private:
 	std::unique_ptr<RobotDrive> robot_drive;
 
 	std::shared_ptr<CANTalon> left_primary_motor;
