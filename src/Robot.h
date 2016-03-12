@@ -18,6 +18,8 @@ public:
 
 	static std::unique_ptr<OI> oi;
 
+	std::unique_ptr<Gyro> gyro;
+
 private:
 	std::unique_ptr<Command> autonomousCommand;
 	double last_inverted_time;
