@@ -41,9 +41,6 @@ void DriveTrain::Drive(float left, float right) {
 	left *= direction_modifier;
 	right *= direction_modifier;
 
-	left *= -1;
-	right *= -1;
-
 	if(left < -1) {
 		left = -1;
 	} else if(left > 1) {
@@ -70,8 +67,8 @@ double DriveTrain::ReturnPIDInput() {
 void DriveTrain::Reset() {
 	Drive(0, 0);
 
-	left_primary_motor->SetPosition(0);
-	right_primary_motor->SetPosition(0);
+	//left_primary_motor->SetPosition(0);
+	//right_primary_motor->SetPosition(0);
 
 	//Disable();
 	//SetSetpoint(0);

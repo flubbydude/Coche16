@@ -58,7 +58,7 @@ void Robot::TeleopPeriodic() {
 
 	SmartDashboard::PutNumber("LAST", GetTime() - last_inverted_time);
 	drive_train->PrintInvertedStatus();
-	if(GetTime() - last_inverted_time >= 0.5 && oi->xbox_controller->GetButton(XBoxController::BUTTON_A)) {
+	if(GetTime() - last_inverted_time >= 1 && oi->xbox_controller->GetButton(XBoxController::BUTTON_A)) {
 		drive_train->InvertDirection();
 	}
 }
