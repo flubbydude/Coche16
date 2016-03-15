@@ -13,12 +13,16 @@ void DriveForTime::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void DriveForTime::Execute() {
-	Robot::drive_train->Drive(drive_speed, drive_speed);
+	if(fabs(GetTime() - start_time) <= target_time) {
+		Robot::drive_train->Drive(drive_speed, drive_speed);
+	} else {
+		Robot::drive_train->Drive(0, 0);
+	}
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool DriveForTime::IsFinished() {
-	return GetTime() - start_time >= target_time;
+	return false;
 }
 
 // Called once after isFinished returns true

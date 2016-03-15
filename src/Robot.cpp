@@ -2,7 +2,7 @@
 #include "Robot.h"
 
 #include "RobotMap.h"
-#include "Commands/DriveForTime.h"
+#include "CommandGroups/AutonomousCommandGroup.h"
 
 std::shared_ptr<DriveTrain> Robot::drive_train;
 std::shared_ptr<Shooter> Robot::shooter;
@@ -20,6 +20,11 @@ void Robot::RobotInit() {
 	last_inverted_time = GetTime();
 
 	gyro = std::unique_ptr<Gyro>(new AnalogGyro(1));
+
+
+	CameraServer::GetInstance()->SetQuality(25);
+	//the camera name (ex "cam0") can be found through the roborio web interface
+	CameraServer::GetInstance()->StartAutomaticCapture("cam0");
 }
 
 void Robot::DisabledInit() {
@@ -31,13 +36,16 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::AutonomousInit() {
-	autonomousCommand.reset(new DriveForTime(1, 0.4));
+	autonomousCommand.reset(new AutonomousCommandGroup());
+	//drive_train->Drive(0, 0);
 
-	if (autonomousCommand != NULL) autonomousCommand->Start();
+	autonomousCommand->Start();
 }
 
 void Robot::AutonomousPeriodic() {
 	Scheduler::GetInstance()->Run();
+	std::cout << "AUTO" << std::endl;
+	SmartDashboard::PutString("String", "is here");
 }
 
 void Robot::TeleopInit() {
@@ -58,7 +66,7 @@ void Robot::TeleopPeriodic() {
 
 	SmartDashboard::PutNumber("LAST", GetTime() - last_inverted_time);
 	drive_train->PrintInvertedStatus();
-	if(GetTime() - last_inverted_time >= 1 && oi->xbox_controller->GetButton(XBoxController::BUTTON_A)) {
+	if(GetTime() - last_inverted_time >= 1000 && oi->xbox_controller->GetButton(XBoxController::BUTTON_A)) {
 		drive_train->InvertDirection();
 	}
 }
