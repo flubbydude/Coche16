@@ -3,22 +3,10 @@
 #include "../Commands/DriveUntilInterrupt.h"
 
 AutonomousCommandGroup::AutonomousCommandGroup() {
-	// Add Commands here:
-	// e.g. AddSequential(new Command1());
-	//      AddSequential(new Command2());
-	// these will run in order.
-
-	// To run multiple commands at the same time,
-	// use AddParallel()
-	// e.g. AddParallel(new Command1());
-	//      AddSequential(new Command2());
-	// Command1 and Command2 will run in parallel.
-
-	// A command group will require all of the subsystems that each member
-	// would require.
-	// e.g. if Command1 requires chassis, and Command2 requires arm,
-	// a CommandGroup containing them would require both the chassis and the
-	// arm.
-	AddSequential(new DriveForTime(5, 0.7));
+	//AddSequential(new DriveForTime(2, 0.5, 0.5));
+	//AddSequential(new DriveForTime(0.1, 0, 0));
+	//AddSequential(new DriveForTime(3, -0.5, -0.5));
+	AddSequential(new DriveForTime(1, 1.0, -1.0));//turn right some amount
+	//AddSequential(new DriveForTime(1, -1.0, 1.0));//turn left some amount
 	AddSequential(new DriveUntilInterrupt(0));
 }

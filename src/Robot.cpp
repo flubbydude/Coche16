@@ -22,7 +22,7 @@ void Robot::RobotInit() {
 	gyro = std::unique_ptr<Gyro>(new AnalogGyro(1));
 
 
-	CameraServer::GetInstance()->SetQuality(25);
+	CameraServer::GetInstance()->SetQuality(0.25);
 	//the camera name (ex "cam0") can be found through the roborio web interface
 	CameraServer::GetInstance()->StartAutomaticCapture("cam0");
 }

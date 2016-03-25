@@ -6,7 +6,7 @@
 
 class DriveForTime: public Command {
 public:
-	DriveForTime(float target_time, float drive_speed);
+	DriveForTime(float target_time, float left_drive_speed, float right_drive_speed);
 	void Initialize();
 	void Execute();
 	bool IsFinished();
@@ -14,9 +14,10 @@ public:
 	void Interrupted();
 
 private:
-	float target_time;
-	float drive_speed;
-	float start_time;
+	double target_time;
+	float left_drive_speed;
+	float right_drive_speed;
+	double start_time;
 };
 
 #endif
