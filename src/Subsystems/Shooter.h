@@ -1,22 +1,19 @@
-#ifndef SHOOTER_H
-#define SHOOTER_H
+#ifndef Shooter_H
+#define Shooter_H
 
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 
-class Shooter: Subsystem {
-
-private:
-	Talon* lMotor;
-	Talon* rMotor;
-
+class Shooter: public Subsystem {
 public:
 	Shooter();
 	void InitDefaultCommand();
-	void run_shooter();
-	void stop_shooter();
-	~Shooter();
 
+	void Run(float speed);
+
+private:
+	std::unique_ptr<Talon> left_talon;
+	std::unique_ptr<Talon> right_talon;
 };
 
 #endif

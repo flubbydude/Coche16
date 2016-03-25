@@ -1,102 +1,79 @@
-#include "WPILib.h"
-#include <Subsystems/Drivetrain.h>
+#include <Commands/DriveForTime.h>
+#include "Robot.h"
 
-#include "Vector.h"
-#include "XboxController.h"
+#include "RobotMap.h"
+#include "CommandGroups/AutonomousCommandGroup.h"
 
-#include "Subsystems/Shooter.h"
-#include "Subsystems/BallCollector.h"
+std::shared_ptr<DriveTrain> Robot::drive_train;
+std::shared_ptr<Shooter> Robot::shooter;
+std::shared_ptr<BallRetriever> Robot::ball_retriever;
 
-class Robot: public IterativeRobot {
-private:
-	// Input devices
-	std::unique_ptr<XboxController> controller;
+std::unique_ptr<OI> Robot::oi;
 
-	// Subsystems
-	std::unique_ptr<Drivetrain> drive_train;
-	std::unique_ptr<Shooter> shooter;
-	std::unique_ptr<BallCollector> ball_collector;
+void Robot::RobotInit() {
+	drive_train.reset(new DriveTrain());
+	shooter.reset(new Shooter());
+	ball_retriever.reset(new BallRetriever());
 
-	void RobotInit() {
-		// Input devices
-		controller = std::unique_ptr<XboxController>(new XboxController(0));
+	oi.reset(new OI());
 
-		// Subsystems
-		drive_train = std::unique_ptr<Drivetrain> (new Drivetrain());
-		shooter = std::unique_ptr<Shooter> (new Shooter());
-		ball_collector = std::unique_ptr<BallCollector> (new BallCollector());
+	last_inverted_time = GetTime();
+
+	gyro = std::unique_ptr<Gyro>(new AnalogGyro(1));
+
+
+	CameraServer::GetInstance()->SetQuality(0.25);
+	//the camera name (ex "cam0") can be found through the roborio web interface
+	CameraServer::GetInstance()->StartAutomaticCapture("cam0");
+}
+
+void Robot::DisabledInit() {
+
+}
+
+void Robot::DisabledPeriodic() {
+	Scheduler::GetInstance()->Run();
+}
+
+void Robot::AutonomousInit() {
+	autonomousCommand.reset(new AutonomousCommandGroup());
+	//drive_train->Drive(0, 0);
+
+	autonomousCommand->Start();
+}
+
+void Robot::AutonomousPeriodic() {
+	Scheduler::GetInstance()->Run();
+	std::cout << "AUTO" << std::endl;
+	SmartDashboard::PutString("String", "is here");
+}
+
+void Robot::TeleopInit() {
+	if (autonomousCommand != NULL) autonomousCommand->Cancel();
+
+	drive_train->Reset();
+	oi->xbox_controller->Calibrate();
+}
+
+void Robot::TeleopPeriodic() {
+	Scheduler::GetInstance()->Run();
+
+	SmartDashboard::PutNumber("Gyro", gyro->GetAngle());
+
+	if(oi->xbox_controller->GetButton(XBoxController::BUTTON_START)) {
+		oi->xbox_controller->Calibrate();
 	}
 
-	/**
-     * This function is called once each time the robot enters Disabled mode.
-     * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
-     */
-	void DisabledInit() {
+	SmartDashboard::PutNumber("LAST", GetTime() - last_inverted_time);
+	drive_train->PrintInvertedStatus();
+	if(GetTime() - last_inverted_time >= 1000 && oi->xbox_controller->GetButton(XBoxController::BUTTON_A)) {
+		drive_train->InvertDirection();
 	}
+}
 
-	void DisabledPeriodic() {
-		Scheduler::GetInstance()->Run();
-	}
-
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select between different autonomous modes
-	 * using the dashboard. The sendable chooser code works with the Java SmartDashboard. If you prefer the LabVIEW
-	 * Dashboard, remove all of the chooser code and uncomment the GetString code to get the auto name from the text box
-	 * below the Gyro
-	 *
-	 * You can add additional auto modes by adding additional commands to the chooser code above (like the commented example)
-	 * or additional comparisons to the if-else structure below with additional strings & commands.
-	 */
-	void AutonomousInit() {
-		/* std::string autoSelected = SmartDashboard::GetString("Auto Selector", "Default");
-		if(autoSelected == "My Auto") {
-			autonomousCommand.reset(new MyAutoCommand());
-		} else {
-			autonomousCommand.reset(new ExampleCommand());
-		} */
-	}
-
-	void AutonomousPeriodic() {
-		Scheduler::GetInstance()->Run();
-	}
-
-	void TeleopInit() {
-		controller->Calibrate();
-	}
-
-	void TeleopPeriodic() {
-		// Calibrate
-		if(controller->GetButton(controller->ButtonRightJoystickPress)) {
-			controller->Calibrate();
-		}
-
-		// Chases drive
-		std::unique_ptr<Vector> left_stick_vector = std::unique_ptr<Vector>(controller->GetLeftStickVector());
-		std::unique_ptr<Vector> right_stick_vector = std::unique_ptr<Vector>(controller->GetRightStickVector());
-
-		drive_train->TankDrive(left_stick_vector->GetMagnitude(true),
-							right_stick_vector->GetMagnitude(true));
-
-		// Shooter control
-		if (controller->GetRightTrigger() >= 0.5) {
-			shooter->run_shooter();
-		}else{
-			shooter->stop_shooter();
-		}
-
-		// Ball Collector control
-		if (controller->GetLeftTrigger() >= 0.5) {
-			ball_collector->Start();
-		} else {
-			ball_collector->Stop();
-		}
-	}
-
-	void TestPeriodic() {
-		LiveWindow::GetInstance()->Run();
-	}
-};
+void Robot::TestPeriodic() {
+	LiveWindow::GetInstance()->Run();
+}
 
 START_ROBOT_CLASS(Robot)
 
