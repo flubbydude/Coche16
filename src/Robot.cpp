@@ -1,77 +1,79 @@
-#include "WPILib.h"
-#include "XboxController.h"
-#include "Subsystems/Shooter.h"
-#include "Subsystems/BallCollector.h"
+#include <Commands/DriveForTime.h>
+#include "Robot.h"
 
-class Robot: public IterativeRobot {
-private:
-	// Robot
-	std::unique_ptr<RobotDrive> robot_drive;
+#include "RobotMap.h"
+#include "CommandGroups/AutonomousCommandGroup.h"
 
-	// Input devices
-	std::unique_ptr<XboxController> controller;
+std::shared_ptr<DriveTrain> Robot::drive_train;
+std::shared_ptr<Shooter> Robot::shooter;
+std::shared_ptr<BallRetriever> Robot::ball_retriever;
 
-	// Subsystems
-	std::unique_ptr<Shooter> shooter;
-	std::unique_ptr<BallCollector> ball_collector;
+std::unique_ptr<OI> Robot::oi;
 
-	void RobotInit() {
-		// Robot
-		robot_drive = std::unique_ptr<RobotDrive> (new RobotDrive(1,2,3,4));
+void Robot::RobotInit() {
+	drive_train.reset(new DriveTrain());
+	shooter.reset(new Shooter());
+	ball_retriever.reset(new BallRetriever());
 
-		// Input devices
-		controller = std::unique_ptr<XboxController>(new XboxController(0));
+	oi.reset(new OI());
 
-		// Subsystems
-		shooter = std::unique_ptr<Shooter> (new Shooter());
-		ball_collector = std::unique_ptr<BallCollector> (new BallCollector());
+	last_inverted_time = GetTime();
+
+	gyro = std::unique_ptr<Gyro>(new AnalogGyro(1));
+
+
+	CameraServer::GetInstance()->SetQuality(0.25);
+	//the camera name (ex "cam0") can be found through the roborio web interface
+	CameraServer::GetInstance()->StartAutomaticCapture("cam0");
+}
+
+void Robot::DisabledInit() {
+
+}
+
+void Robot::DisabledPeriodic() {
+	Scheduler::GetInstance()->Run();
+}
+
+void Robot::AutonomousInit() {
+	autonomousCommand.reset(new AutonomousCommandGroup());
+	//drive_train->Drive(0, 0);
+
+	autonomousCommand->Start();
+}
+
+void Robot::AutonomousPeriodic() {
+	Scheduler::GetInstance()->Run();
+	std::cout << "AUTO" << std::endl;
+	SmartDashboard::PutString("String", "is here");
+}
+
+void Robot::TeleopInit() {
+	if (autonomousCommand != NULL) autonomousCommand->Cancel();
+
+	drive_train->Reset();
+	oi->xbox_controller->Calibrate();
+}
+
+void Robot::TeleopPeriodic() {
+	Scheduler::GetInstance()->Run();
+
+	SmartDashboard::PutNumber("Gyro", gyro->GetAngle());
+
+	if(oi->xbox_controller->GetButton(XBoxController::BUTTON_START)) {
+		oi->xbox_controller->Calibrate();
 	}
 
-	void DisabledInit() {
+	SmartDashboard::PutNumber("LAST", GetTime() - last_inverted_time);
+	drive_train->PrintInvertedStatus();
+	if(GetTime() - last_inverted_time >= 1000 && oi->xbox_controller->GetButton(XBoxController::BUTTON_A)) {
+		drive_train->InvertDirection();
 	}
+}
 
-	void DisabledPeriodic() {
-
-	}
-
-	void AutonomousInit() {
-
-	}
-
-	void AutonomousPeriodic() {
-
-	}
-
-	void TeleopInit() {
-
-	}
-
-	void TeleopPeriodic() {
-		// Chases drive
-		std::unique_ptr<Vector> left_stick_vector = std::unique_ptr<Vector>(controller->GetLeftVector());
-		std::unique_ptr<Vector> right_stick_vector = std::unique_ptr<Vector>(controller->GetRightVector());
-
-		robot_drive->TankDrive(left_stick_vector->magnitude, right_stick_vector->magnitude, false);
-
-		// Shooter control
-		if (controller->GetTrigger(controller->RightTrigger,controller->RightTriggerOffset) >= 0.5) {
-			shooter->run_shooter();
-		} else {
-			shooter->stop_shooter();
-		}
-
-		// Ball Collector control
-		if (controller->GetTrigger(controller->LeftTrigger,controller->LeftTriggerOffset) >= 0.5) {
-			ball_collector->Start();
-		} else {
-			ball_collector->Stop();
-		}
-	}
-
-	void TestPeriodic() {
-
-	}
-};
+void Robot::TestPeriodic() {
+	LiveWindow::GetInstance()->Run();
+}
 
 START_ROBOT_CLASS(Robot)
 

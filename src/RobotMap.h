@@ -21,14 +21,18 @@
 //const int RANGE_FINDER_MODULE = 1;
 
 namespace RobotMap {
-	const int FRONT_LEFT_MOTOR = 0;
-	const int BACK_LEFT_MOTOR = 1;
-	const int FRONT_RIGHT_MOTOR = 2;
-	const int BACK_RIGHT_MOTOR = 3;
-	const int RIGHT_SHOOTER_MOTOR = 4;
-	const int LEFT_SHOOTER_MOTOR = 5;
-	const int INTAKE_MOTOR = 6;
-	const int LIFT_MOTOR = 7;
+	const int OPERATOR_CONTROLLER_PORT = 0;
+
+	const int LEFT_PRIMARY_MOTOR = 2;// CAN - Talon
+	const int LEFT_SECONDARY_MOTOR = 3;// CAN - Jaguar
+
+	const int RIGHT_PRIMARY_MOTOR = 1;// CAN - Talon
+	const int RIGHT_SECONDARY_MOTOR = 4;// CAN - Jaguar
+
+	const int RIGHT_SHOOTER_MOTOR = 6;// PWM - Talon
+	const int LEFT_SHOOTER_MOTOR = 7;// PWM - Talon
+
+	const int INTAKE_MOTOR = 8;// PWM - Talon
 }
 
 #endif

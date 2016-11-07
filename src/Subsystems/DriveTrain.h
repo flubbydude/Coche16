@@ -1,19 +1,33 @@
-#ifndef DRIVE_TRAIN_H
-#define DRIVE_TRAIN_H
+#ifndef DriveTrain_H
+#define DriveTrain_H
 
 #include "Commands/Subsystem.h"
 #include "WPILib.h"
 
-class Drivetrain: public Subsystem {
+class DriveTrain: public Subsystem {
+public:
+	DriveTrain();
+	void InitDefaultCommand();
+
+	void Drive(float left, float right);
+
+	void Reset();
+	void InvertDirection();
+
+	void PrintInvertedStatus();
+
+	void UsePIDOutput(double output);
+	double ReturnPIDInput();
 
 private:
-	RobotDrive *robot;
+	std::unique_ptr<RobotDrive> robot_drive;
 
-public:
-	Drivetrain(RobotDrive *drive);
-	void InitDefaultCommand();
-	void drive(float lSpeed, float rSpeed);
+	std::shared_ptr<CANTalon> left_primary_motor;
+	std::shared_ptr<CANJaguar> left_secondary_motor;
+	std::shared_ptr<CANTalon> right_primary_motor;
+	std::shared_ptr<CANJaguar> right_secondary_motor;
 
+	int direction_modifier;
 };
 
 #endif
